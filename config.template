@@ -1,0 +1,9 @@
+# Writer Tracker - Configuration Template
+# Copy this file to .env and fill in your values
+
+# API Key for content management (keep this secret!)
+WRITER_TRACKER_API_KEY=your-secret-api-key-here
+
+# Git configuration (for auto-push)
+GIT_REMOTE_URL=https://github.com/YOUR_USERNAME/writent01.git
+GIT_BRANCH=main
