@@ -90,17 +90,18 @@ export async function fetchFeedXml(url: string): Promise<string> {
 
 export function guessFeedUrls(website: string): string[] {
   const urls: string[] = [];
+  const base = website.replace(/\/+$/, ''); // strip trailing slashes
 
   // If it's already a feed-looking URL, try it directly first
-  if (website.includes('/feed') || website.includes('/rss') || website.includes('/atom')) {
-    urls.push(website);
+  if (base.includes('/feed') || base.includes('/rss') || base.includes('/atom')) {
+    urls.push(base);
   }
 
   // Standard patterns
-  urls.push(`${website}/feed`);
-  urls.push(`${website}/rss`);
-  urls.push(`${website}/atom.xml`);
-  urls.push(`${website}/index.xml`);
+  urls.push(`${base}/feed`);
+  urls.push(`${base}/rss`);
+  urls.push(`${base}/atom.xml`);
+  urls.push(`${base}/index.xml`);
 
   return urls;
 }

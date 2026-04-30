@@ -382,7 +382,7 @@ export async function deleteRequest(db: D1Database, id: string): Promise<boolean
   return (meta?.changes || 0) > 0;
 }
 
-export function getNextRequestId(db: D1Database, existing: WriterRequest[]): string {
+export function getNextRequestId(existing: WriterRequest[]): string {
   const ids = existing.map(r => parseInt(r.id.replace('req-', '')) || 0);
   return 'req-' + (ids.length > 0 ? Math.max(...ids) + 1 : 1);
 }

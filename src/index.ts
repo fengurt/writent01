@@ -139,6 +139,11 @@ app.put('/api/writers/modern/:id', async (c) => {
   if (!writer) return c.json({ error: 'Writer not found' }, 404);
 
   const body = await c.req.json();
+  // Map camelCase API fields to snake_case DB columns
+  if (body.feedUrl !== undefined) {
+    body.feed_url = body.feedUrl;
+    delete body.feedUrl;
+  }
   await db.updateWriter(c.env.DB, id, body);
   const updated = await db.getWriterById(c.env.DB, id);
   return c.json({ success: true, writer: updated });
@@ -225,6 +230,11 @@ app.put('/api/writers/historical/:id', async (c) => {
   if (!writer) return c.json({ error: 'Writer not found' }, 404);
 
   const body = await c.req.json();
+  // Map camelCase API fields to snake_case DB columns
+  if (body.feedUrl !== undefined) {
+    body.feed_url = body.feedUrl;
+    delete body.feedUrl;
+  }
   await db.updateWriter(c.env.DB, id, body);
   const updated = await db.getWriterById(c.env.DB, id);
   return c.json({ success: true, writer: updated });
@@ -550,7 +560,7 @@ app.post('/api/requests', async (c) => {
 
   // Get all existing requests to compute next ID
   const existing = await db.getRequests(c.env.DB);
-  const nextId = db.getNextRequestId(c.env.DB, existing);
+  const nextId = db.getNextRequestId(existing);
 
   const request: db.WriterRequest = {
     id: nextId,
