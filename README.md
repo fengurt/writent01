@@ -9,9 +9,60 @@
 - **REST API** - Full CRUD operations for content management
 - **MCP Tool** - Machine Context Protocol for AI integration
 - **Update Tracking / 更新追踪** - RSS feed monitoring
+- **Cloudflare Native / Cloudflare 原生** - Workers + D1 + Pages
 - **Git Auto-push / Git 自动推送** - Version control integration
 
-## Quick Start / 快速开始
+## Deploy to Cloudflare / 部署到 Cloudflare
+
+### Prerequisites
+
+```bash
+npm install -g wrangler
+```
+
+### 1. Create D1 Database
+
+```bash
+wrangler d1 create writer-tracker-db
+# Copy the database_id into wrangler.toml [[d1_databases]]
+```
+
+### 2. Deploy Worker
+
+```bash
+npm install
+wrangler deploy
+```
+
+### 3. Seed Database
+
+```bash
+wrangler d1 execute writer-tracker-db --file=data/seed.sql
+```
+
+### 4. Set Secrets
+
+```bash
+wrangler secret put WRITER_TRACKER_API_KEY
+```
+
+### 5. Deploy Frontend (Pages)
+
+```bash
+wrangler pages deploy public
+```
+
+### 6. Configure Pages Redirects
+
+Update `public/_redirects` with your Worker URL, then re-deploy Pages.
+
+### Email (Optional)
+
+Set `SENDING_DOMAIN` and `MAIL_TO` in `wrangler.toml` [vars]. Requires Cloudflare DNS with SPF record for MailChannels.
+
+---
+
+## Local Development / 本地开发
 
 ```bash
 # Install dependencies / 安装依赖
@@ -23,6 +74,13 @@ cd mcp-writer-tracker && npm install && cd ..
 
 # Or with API key / 或设置API密钥启动
 WRITER_TRACKER_API_KEY=your-secret-key ./restart.sh start
+```
+
+### Cloudflare Local Dev
+
+```bash
+npm run cf:dev
+# Worker runs at http://localhost:8787
 ```
 
 ## Access / 访问

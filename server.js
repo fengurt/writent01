@@ -6,7 +6,37 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const fetch = require('node-fetch');
 const parser = new Parser();
+
+const DATA_DIR = path.join(__dirname, 'data');
+
+// Ensure data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// File-based persistence helpers
+function loadJSON(filename) {
+  const filepath = path.join(DATA_DIR, filename);
+  try {
+    if (fs.existsSync(filepath)) {
+      return JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+    }
+  } catch (e) {
+    console.error(`Failed to load ${filename}:`, e.message);
+  }
+  return null;
+}
+
+function saveJSON(filename, data) {
+  const filepath = path.join(DATA_DIR, filename);
+  try {
+    fs.writeFileSync(filepath, JSON.stringify(data, null, 2), 'utf-8');
+  } catch (e) {
+    console.error(`Failed to save ${filename}:`, e.message);
+  }
+}
 
 // API Key from environment - NEVER exposed to frontend
 const API_KEY = process.env.WRITER_TRACKER_API_KEY;
@@ -312,6 +342,172 @@ let modernWriters = [
     articles: [
       { title: 'Spin Sucks', url: 'https://spinsucks.com' }
     ]
+  },
+  // ========== AI Newsletters ==========
+  {
+    id: 'bens-bites',
+    name: "Ben's Bites / Ben's Bites",
+    identity: 'AI应用层创业生态深度追踪, 120K+风投与创始人订阅 / AI Application Layer Startup Ecosystem, 120K+ VCs & Founders',
+    website: 'https://bensbites.com',
+    articles: [
+      { title: "Ben's Bites / 订阅", url: 'https://bensbites.com' }
+    ]
+  },
+  {
+    id: 'datanorth-ai',
+    name: 'DataNorth AI / DataNorth AI',
+    identity: '企业级AI战略与ROI落地, 150K+企业高管订阅 / Enterprise AI Strategy & ROI, 150K+ Executives',
+    website: 'https://datanorth.ai',
+    articles: [
+      { title: 'Blog / 博客', url: 'https://datanorth.ai/blog' }
+    ]
+  },
+  {
+    id: 'alphasignal',
+    name: 'AlphaSignal / AlphaSignal',
+    identity: '硬核AI技术论文与模型追踪, 180K+ ML工程师订阅 / Top 1% AI Research & Model Updates, 180K+ ML Engineers',
+    website: 'https://alphasignal.ai',
+    articles: [
+      { title: 'AlphaSignal / 订阅', url: 'https://alphasignal.ai' }
+    ]
+  },
+  {
+    id: 'turing-post',
+    name: 'Turing Post / Turing Post',
+    identity: '地缘政治与宏观AI治理, 95K+政策顾问与宏观投资者订阅 / Geopolitics & AI Governance, 95K+ Policy Advisors & Macro Investors',
+    website: 'https://www.turingpost.com',
+    articles: [
+      { title: 'Turing Post / 订阅', url: 'https://www.turingpost.com' }
+    ]
+  },
+  {
+    id: 'genai-works',
+    name: 'The Atlas / GenAI.Works / 生成式AI日报',
+    identity: '全球最大AI社区, 1M+全行业从业者订阅, 专注初创生态与实战部署 / Largest AI Community, 1M+ Subscribers, Startup Ecosystem & Deployment',
+    website: 'https://genai.works',
+    articles: [
+      { title: 'Newsletter / 订阅', url: 'https://newsletter.genai.works' },
+      { title: 'Insights / 洞察', url: 'https://genai.works/insights' }
+    ]
+  },
+  {
+    id: 'doomberg',
+    name: 'Doomberg / Doomberg',
+    identity: '能源金融地缘政治深度分析, Substack顶级财经通讯 / Energy, Finance & Geopolitics Analysis, Top Finance Substack',
+    website: 'https://newsletter.doomberg.com',
+    articles: [
+      { title: 'About / 关于', url: 'https://newsletter.doomberg.com/about' }
+    ]
+  },
+  {
+    id: 'prospero-ai',
+    name: 'Prospero.Ai / Prospero.Ai',
+    identity: 'AI量化股票分析平台, 机器学习驱动的二级市场信号 / AI-Powered Stock Analysis, ML-Driven Market Signals',
+    website: 'https://www.prospero.ai',
+    articles: [
+      { title: 'Resources / 资源', url: 'https://www.prospero.ai/resources-blog' }
+    ]
+  },
+  // ========== AI Podcasts ==========
+  {
+    id: 'latent-space',
+    name: 'Latent Space / Latent Space',
+    identity: 'AI工程师深度访谈播客, 基础模型架构与智能体部署实战 / AI Engineer Deep-Dive Podcast, Foundation Models & Agent Deployment',
+    website: 'https://www.latent.space',
+    articles: [
+      { title: 'Podcast / 播客', url: 'https://www.latent.space' }
+    ]
+  },
+  {
+    id: 'dwarkesh-podcast',
+    name: 'Dwarkesh Podcast / Dwarkesh Podcast',
+    identity: '深度长访谈播客, AGI演进路线与缩放定律理论边界 / Deep Long-Form Interviews, AGI Roadmap & Scaling Laws Theory',
+    website: 'https://www.dwarkeshpatel.com',
+    articles: [
+      { title: 'Podcast / 播客', url: 'https://www.dwarkeshpatel.com' }
+    ]
+  },
+  {
+    id: 'cognitive-revolution',
+    name: 'The Cognitive Revolution / 认知革命播客',
+    identity: '生成式AI商业与社会分析播客, 经济部门颠覆与深远文化影响 / GenAI Business & Society Analysis, Economic Disruption & Cultural Impact',
+    website: 'https://www.cognitiverevolution.ai',
+    articles: [
+      { title: 'Podcast / 播客', url: 'https://www.cognitiverevolution.ai' }
+    ]
+  },
+  {
+    id: 'no-priors',
+    name: 'No Priors / No Priors',
+    identity: '顶级VC创投对谈播客, 由Sarah Guo与Elad Gil主持, 专注AI颠覆时机与护城河 / Top VC Podcast by Sarah Guo & Elad Gil, AI Disruption Timing & Startup Moats',
+    website: 'https://feeds.megaphone.fm/nopriors',
+    articles: [
+      { title: 'Apple Podcasts / 苹果播客', url: 'https://podcasts.apple.com/us/podcast/no-priors-artificial-intelligence-machine-learning/id1668002688' }
+    ]
+  },
+  {
+    id: 'lex-fridman',
+    name: 'Lex Fridman Podcast / Lex Fridman播客',
+    identity: '马拉松式深度长谈播客, 科学哲学AI与人类智能本质 / Marathon Long-Form Conversations, Science, Philosophy & AI',
+    website: 'https://lexfridman.com',
+    articles: [
+      { title: 'Podcast / 播客', url: 'https://lexfridman.com/podcast' }
+    ]
+  },
+  // ========== AI Influencers & KOLs ==========
+  {
+    id: 'yann-lecun',
+    name: 'Yann LeCun / Yann LeCun',
+    identity: 'Meta首席AI科学家, 世界模型与开源生态旗手, 图灵奖得主 / Meta Chief AI Scientist, World Models & Open Source Champion, Turing Award Winner',
+    website: 'http://yann.lecun.com',
+    articles: [
+      { title: 'Homepage / 主页', url: 'http://yann.lecun.com' }
+    ]
+  },
+  {
+    id: 'andrej-karpathy',
+    name: 'Andrej Karpathy / Andrej Karpathy',
+    identity: '前特斯拉与OpenAI科学家, LLM与深度学习架构科普权威 / Ex-Tesla & OpenAI Scientist, LLM & Deep Learning Educator',
+    website: 'https://karpathy.ai',
+    articles: [
+      { title: 'Homepage / 主页', url: 'https://karpathy.ai' }
+    ]
+  },
+  {
+    id: 'allie-k-miller',
+    name: 'Allie K. Miller / Allie K. Miller',
+    identity: '前AWS全球ML负责人, AI商业应用顶级顾问, TIME100 AI影响力人物 / Ex-AWS Global ML Head, Top AI Business Advisor, TIME100 AI Influencer',
+    website: 'https://www.alliekmiller.com',
+    articles: [
+      { title: 'Homepage / 主页', url: 'https://www.alliekmiller.com' }
+    ]
+  },
+  {
+    id: 'cassie-kozyrkov',
+    name: 'Cassie Kozyrkov / Cassie Kozyrkov',
+    identity: '前谷歌首席决策科学家, 决策智能领域创始人, 培训2万+谷歌员工 / Ex-Google Chief Decision Scientist, Decision Intelligence Pioneer, Trained 20K+ Googlers',
+    website: 'https://www.kozyr.com',
+    articles: [
+      { title: 'KOZYR / 主页', url: 'https://www.kozyr.com' }
+    ]
+  },
+  {
+    id: 'fei-fei-li',
+    name: 'Fei-Fei Li (李飞飞) / Fei-Fei Li',
+    identity: '斯坦福大学教授, 空间AI与计算机视觉先驱, World Labs创始人 / Stanford Professor, Spatial AI & Computer Vision Pioneer, World Labs Founder',
+    website: 'https://profiles.stanford.edu/fei-fei-li',
+    articles: [
+      { title: 'Stanford Profile / 斯坦福主页', url: 'https://profiles.stanford.edu/fei-fei-li' }
+    ]
+  },
+  {
+    id: 'ethan-mollick',
+    name: 'Ethan Mollick / Ethan Mollick',
+    identity: '沃顿商学院教授, 生成式AI生产力与工作未来研究权威 / Wharton Professor, GenAI Productivity & Future of Work Research Pioneer',
+    website: 'https://www.oneusefulthing.org',
+    articles: [
+      { title: 'One Useful Thing / 主页', url: 'https://www.oneusefulthing.org' }
+    ]
   }
 ];
 
@@ -410,13 +606,170 @@ let historicalWriters = [
   }
 ];
 
-// In-memory update tracking
-const updateHistory = {};
-const lastChecked = {};
+// Articles data
+let articles = [];
+let nextArticleId = 1;
+let updateHistory = {};
+let lastChecked = {};
+let requests = [];
 
-modernWriters.forEach(writer => {
-  updateHistory[writer.id] = [];
-  lastChecked[writer.id] = null;
+// Load persisted data or seed from defaults
+function initData() {
+  // Load writers — merge persisted with hardcoded defaults
+  const savedWriters = loadJSON('writers.json');
+  if (savedWriters && savedWriters.modern && savedWriters.historical) {
+    // Merge: keep all persisted writers, add any new hardcoded ones
+    const persistedModernIds = new Set(savedWriters.modern.map(w => w.id));
+    const persistedHistoricalIds = new Set(savedWriters.historical.map(w => w.id));
+    const newModern = modernWriters.filter(w => !persistedModernIds.has(w.id));
+    const newHistorical = historicalWriters.filter(w => !persistedHistoricalIds.has(w.id));
+    modernWriters = [...savedWriters.modern, ...newModern];
+    historicalWriters = [...savedWriters.historical, ...newHistorical];
+    if (newModern.length > 0 || newHistorical.length > 0) {
+      saveJSON('writers.json', { modern: modernWriters, historical: historicalWriters });
+      console.log(`  Merged ${newModern.length} new modern + ${newHistorical.length} new historical writers`);
+    }
+    console.log(`  Loaded ${modernWriters.length} modern + ${historicalWriters.length} historical writers from disk`);
+  } else {
+    saveJSON('writers.json', { modern: modernWriters, historical: historicalWriters });
+    console.log(`  Seeded ${modernWriters.length} modern + ${historicalWriters.length} historical writers`);
+  }
+
+  // Load articles
+  const savedArticles = loadJSON('articles.json');
+  if (savedArticles) {
+    articles = savedArticles;
+    articles.forEach(a => {
+      const numId = parseInt(a.id.replace('a-', ''));
+      if (numId >= nextArticleId) nextArticleId = numId + 1;
+    });
+    console.log(`  Loaded ${articles.length} articles from disk`);
+  }
+
+  // Load updates
+  const savedUpdates = loadJSON('updates.json');
+  if (savedUpdates) {
+    updateHistory = savedUpdates.history || {};
+    lastChecked = savedUpdates.lastChecked || {};
+  }
+
+  // Load requests
+  const savedRequests = loadJSON('requests.json');
+  if (savedRequests) {
+    requests = savedRequests;
+  }
+
+  // Load state
+  const savedState = loadJSON('state.json');
+  if (savedState && savedState.nextArticleId) {
+    nextArticleId = savedState.nextArticleId;
+  }
+
+  // Init updateHistory for writers without entries
+  modernWriters.forEach(writer => {
+    if (!updateHistory[writer.id]) updateHistory[writer.id] = [];
+    if (!lastChecked[writer.id]) lastChecked[writer.id] = null;
+  });
+}
+
+function saveState() {
+  saveJSON('state.json', { nextArticleId });
+}
+
+function saveArticles() {
+  saveJSON('articles.json', articles);
+}
+
+function saveWriters() {
+  saveJSON('writers.json', { modern: modernWriters, historical: historicalWriters });
+}
+
+function saveUpdates() {
+  saveJSON('updates.json', { history: updateHistory, lastChecked });
+}
+
+function saveRequests() {
+  saveJSON('requests.json', requests);
+}
+
+// Helper: generate unique article ID
+function generateArticleId() {
+  return `a-${nextArticleId++}`;
+}
+
+// Helper: resolve writer name from ID
+function getWriterName(writerId) {
+  const writer = modernWriters.find(w => w.id === writerId);
+  return writer ? writer.name : 'Unknown';
+}
+
+// Helper: get all unique tags across articles
+function getAllTags() {
+  const tagSet = new Set();
+  articles.forEach(a => {
+    if (Array.isArray(a.tags)) a.tags.forEach(t => tagSet.add(t.toLowerCase()));
+  });
+  return [...tagSet].sort();
+}
+
+// ==================== ARTICLE PUBLIC ENDPOINTS ====================
+
+// List articles with filters
+app.get('/api/articles', (req, res) => {
+  const { tag, writerId, source, sort, limit } = req.query;
+  let result = [...articles];
+
+  if (tag) {
+    const t = tag.toLowerCase();
+    result = result.filter(a => a.tags && a.tags.some(tg => tg.toLowerCase() === t));
+  }
+  if (writerId) {
+    result = result.filter(a => a.writerId === writerId);
+  }
+  if (source) {
+    result = result.filter(a => a.source === source);
+  }
+
+  const sortOrder = sort === 'oldest' ? 1 : -1;
+  result.sort((a, b) => {
+    const da = a.publishedAt || a.createdAt || '';
+    const db = b.publishedAt || b.createdAt || '';
+    return sortOrder * da.localeCompare(db);
+  });
+
+  const maxLimit = Math.min(parseInt(limit) || 50, 200);
+  result = result.slice(0, maxLimit);
+
+  res.json({
+    articles: result,
+    total: articles.length,
+    tags: getAllTags()
+  });
+});
+
+// Article feed for focus carousel
+app.get('/api/articles/feed', (req, res) => {
+  const count = Math.min(parseInt(req.query.count) || 5, 20);
+  const sorted = [...articles].sort((a, b) => {
+    const da = a.publishedAt || a.createdAt || '';
+    const db = b.publishedAt || b.createdAt || '';
+    return db.localeCompare(da);
+  });
+  res.json(sorted.slice(0, count));
+});
+
+// Get all tags
+app.get('/api/articles/tags', (req, res) => {
+  res.json({ tags: getAllTags() });
+});
+
+// Get single article
+app.get('/api/articles/:id', (req, res) => {
+  const article = articles.find(a => a.id === req.params.id);
+  if (!article) {
+    return res.status(404).json({ error: 'Article not found' });
+  }
+  res.json(article);
 });
 
 // ==================== PUBLIC READ API ====================
@@ -568,6 +921,8 @@ app.post('/api/writers/modern', requireAuth, (req, res) => {
 
   modernWriters.push(newWriter);
   updateHistory[id] = [];
+  saveWriters();
+  saveUpdates();
 
   res.status(201).json({ success: true, writer: newWriter });
 });
@@ -589,6 +944,7 @@ app.put('/api/writers/modern/:id', requireAuth, (req, res) => {
   if (twitter !== undefined) modernWriters[index].twitter = twitter;
   if (articles) modernWriters[index].articles = articles;
 
+  saveWriters();
   res.json({ success: true, writer: modernWriters[index] });
 });
 
@@ -603,6 +959,8 @@ app.delete('/api/writers/modern/:id', requireAuth, (req, res) => {
 
   const deleted = modernWriters.splice(index, 1)[0];
   delete updateHistory[id];
+  saveWriters();
+  saveUpdates();
 
   res.json({ success: true, deleted });
 });
@@ -628,6 +986,7 @@ app.post('/api/writers/historical', requireAuth, (req, res) => {
   };
 
   historicalWriters.push(newWriter);
+  saveWriters();
 
   res.status(201).json({ success: true, writer: newWriter });
 });
@@ -648,6 +1007,7 @@ app.put('/api/writers/historical/:id', requireAuth, (req, res) => {
   if (masterpiece) historicalWriters[index].masterpiece = masterpiece;
   if (description) historicalWriters[index].description = description;
 
+  saveWriters();
   res.json({ success: true, writer: historicalWriters[index] });
 });
 
@@ -661,6 +1021,7 @@ app.delete('/api/writers/historical/:id', requireAuth, (req, res) => {
   }
 
   const deleted = historicalWriters.splice(index, 1)[0];
+  saveWriters();
 
   res.json({ success: true, deleted });
 });
@@ -725,6 +1086,348 @@ app.get('/api/updates/history/:id', requireAuth, (req, res) => {
     lastChecked: lastChecked[id]
   });
 });
+
+// ==================== PROTECTED ARTICLE ENDPOINTS ====================
+
+// Add article manually
+app.post('/api/articles', requireAuth, (req, res) => {
+  const { title, url, writerId, tags, excerpt, content, publishedAt } = req.body;
+
+  if (!title || !url || !writerId) {
+    return res.status(400).json({ error: 'title, url, and writerId are required' });
+  }
+
+  if (!modernWriters.find(w => w.id === writerId)) {
+    return res.status(400).json({ error: 'writerId does not match any modern writer' });
+  }
+
+  if (articles.find(a => a.url === url)) {
+    return res.status(409).json({ error: 'Article with this URL already exists' });
+  }
+
+  const article = {
+    id: generateArticleId(),
+    title,
+    url,
+    writerId,
+    writerName: getWriterName(writerId),
+    tags: tags || [],
+    excerpt: excerpt || '',
+    content: content || '',
+    contentSnippet: '',
+    source: 'manual',
+    publishedAt: publishedAt || new Date().toISOString(),
+    createdAt: new Date().toISOString()
+  };
+
+  articles.push(article);
+  saveArticles();
+  saveState();
+  res.status(201).json({ success: true, article });
+});
+
+// Update article
+app.put('/api/articles/:id', requireAuth, (req, res) => {
+  const article = articles.find(a => a.id === req.params.id);
+  if (!article) {
+    return res.status(404).json({ error: 'Article not found' });
+  }
+
+  const { title, url, writerId, tags, excerpt, content, publishedAt } = req.body;
+
+  if (title) article.title = title;
+  if (url !== undefined) article.url = url;
+  if (tags) article.tags = tags;
+  if (excerpt !== undefined) article.excerpt = excerpt;
+  if (content !== undefined) article.content = content;
+  if (publishedAt) article.publishedAt = publishedAt;
+
+  if (writerId) {
+    if (!modernWriters.find(w => w.id === writerId)) {
+      return res.status(400).json({ error: 'writerId does not match any modern writer' });
+    }
+    article.writerId = writerId;
+    article.writerName = getWriterName(writerId);
+  }
+
+  saveArticles();
+  res.json({ success: true, article });
+});
+
+// Delete article
+app.delete('/api/articles/:id', requireAuth, (req, res) => {
+  const index = articles.findIndex(a => a.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Article not found' });
+  }
+
+  const deleted = articles.splice(index, 1)[0];
+  saveArticles();
+  res.json({ success: true, deleted });
+});
+
+// Bulk RSS fetch
+app.post('/api/fetch-articles', requireAuth, async (req, res) => {
+  const { writerId } = req.query;
+  const writers = writerId
+    ? modernWriters.filter(w => w.id === writerId)
+    : modernWriters;
+
+  let fetched = 0;
+  let newArticles = 0;
+  let skipped = 0;
+
+  for (const writer of writers) {
+    const rssUrls = [
+      `${writer.website}/feed`,
+      `${writer.website}/rss`,
+      `${writer.website}/atom.xml`
+    ];
+
+    if (writer.articles && writer.articles[0]?.url?.includes('substack')) {
+      const substackMatch = writer.articles[0].url.match(/https?:\/\/([^\.]+)\.substack\.com/);
+      if (substackMatch) {
+        rssUrls.unshift(`https://${substackMatch[1]}.substack.com/feed`);
+      }
+    }
+
+    for (const rssUrl of rssUrls) {
+      try {
+        const feed = await parser.parseURL(rssUrl);
+        if (feed.items && feed.items.length > 0) {
+          for (const item of feed.items) {
+            fetched++;
+            const articleUrl = item.link;
+            if (articles.find(a => a.url === articleUrl)) {
+              skipped++;
+              continue;
+            }
+
+            const article = {
+              id: generateArticleId(),
+              title: item.title || 'Untitled',
+              url: articleUrl,
+              writerId: writer.id,
+              writerName: writer.name,
+              tags: [],
+              excerpt: item.contentSnippet || '',
+              content: item['content:encoded'] || item.content || '',
+              contentSnippet: item.contentSnippet || '',
+              source: 'rss',
+              publishedAt: item.pubDate || item.isoDate || new Date().toISOString(),
+              createdAt: new Date().toISOString()
+            };
+
+            articles.push(article);
+            newArticles++;
+          }
+          break;
+        }
+      } catch (e) {}
+    }
+  }
+
+  if (newArticles > 0) {
+    saveArticles();
+    saveState();
+  }
+  res.json({ fetched, new: newArticles, skipped });
+});
+
+// ==================== WRITER REQUEST ENDPOINTS ====================
+
+// Optional email sending via nodemailer
+let nodemailer = null;
+let mailTransporter = null;
+const SMTP_HOST = process.env.SMTP_HOST;
+const SMTP_TO = process.env.SMTP_TO;
+
+if (SMTP_HOST && SMTP_TO) {
+  try {
+    nodemailer = require('nodemailer');
+    mailTransporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT) || 587,
+      secure: parseInt(process.env.SMTP_PORT) === 465,
+      auth: {
+        user: process.env.SMTP_USER || '',
+        pass: process.env.SMTP_PASS || ''
+      }
+    });
+    console.log(`  Email: Configured (${SMTP_HOST} → ${SMTP_TO})`);
+  } catch (e) {
+    console.log(`  Email: Failed to configure: ${e.message}`);
+  }
+}
+
+function getNextRequestId() {
+  const ids = requests.map(r => parseInt(r.id.replace('req-', '')) || 0);
+  return 'req-' + (ids.length > 0 ? Math.max(...ids) + 1 : 1);
+}
+
+// Submit a writer request (public, no auth needed)
+app.post('/api/requests', async (req, res) => {
+  const { writerName, website, reason } = req.body;
+
+  if (!writerName || writerName.trim().length === 0) {
+    return res.status(400).json({ error: 'writerName is required' });
+  }
+
+  const request = {
+    id: getNextRequestId(),
+    writerName: writerName.trim(),
+    website: (website || '').trim(),
+    reason: (reason || '').trim(),
+    submittedAt: new Date().toISOString()
+  };
+
+  requests.push(request);
+  saveRequests();
+
+  // Try sending email if configured
+  if (mailTransporter && SMTP_TO) {
+    try {
+      await mailTransporter.sendMail({
+        from: process.env.SMTP_USER || SMTP_TO,
+        to: SMTP_TO,
+        subject: `Writer Tracker: New writer request - ${request.writerName}`,
+        text: [
+          `New writer request:`,
+          ``,
+          `Writer: ${request.writerName}`,
+          `Website: ${request.website || 'Not provided'}`,
+          `Reason: ${request.reason || 'Not provided'}`,
+          ``,
+          `Submitted: ${request.submittedAt}`,
+          ``,
+          `Manage: http://localhost:${PORT}/api/requests (requires API key)`
+        ].join('\n')
+      });
+      console.log(`  Email sent for request ${request.id}`);
+    } catch (e) {
+      console.log(`  Email failed for request ${request.id}: ${e.message}`);
+      // Don't fail the request if email fails
+    }
+  }
+
+  res.status(201).json({ success: true, request });
+});
+
+// List all requests (protected)
+app.get('/api/requests', requireAuth, (req, res) => {
+  res.json({ requests, total: requests.length });
+});
+
+// Delete a request (protected)
+app.delete('/api/requests/:id', requireAuth, (req, res) => {
+  const index = requests.findIndex(r => r.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Request not found' });
+  }
+  const deleted = requests.splice(index, 1)[0];
+  saveRequests();
+  res.json({ success: true, deleted });
+});
+
+// ==================== ARTICLE PROXY & DOWNLOAD ====================
+
+// SSRF protection: validate URL is safe to fetch
+function isSafeUrl(url) {
+  try {
+    const parsed = new URL(url);
+    if (!['http:', 'https:'].includes(parsed.protocol)) return false;
+
+    const hostname = parsed.hostname;
+    // Block localhost and private IPs
+    if (['localhost', '127.0.0.1', '0.0.0.0', '::1'].includes(hostname)) return false;
+    if (hostname.startsWith('10.') || hostname.startsWith('172.16.') ||
+        hostname.startsWith('192.168.') || hostname.startsWith('169.254.')) return false;
+    if (hostname.match(/^127\.\d+\.\d+\.\d+$/)) return false;
+
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+// Proxy fetch article content
+app.get('/api/articles/:id/proxy', async (req, res) => {
+  const article = articles.find(a => a.id === req.params.id);
+  if (!article) {
+    return res.status(404).json({ error: 'Article not found' });
+  }
+
+  if (!isSafeUrl(article.url)) {
+    return res.status(400).json({ error: 'Unsafe URL' });
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(article.url, {
+      signal: controller.signal,
+      headers: { 'User-Agent': 'WriterTracker/1.0' }
+    });
+    clearTimeout(timeout);
+
+    if (!response.ok) {
+      return res.status(502).json({ error: `Could not fetch article: HTTP ${response.status}` });
+    }
+
+    const contentType = response.headers.get('content-type') || 'text/html';
+    let body = await response.text();
+
+    // Limit response size to 5MB
+    if (body.length > 5 * 1024 * 1024) {
+      body = body.substring(0, 5 * 1024 * 1024);
+    }
+
+    res.set('Content-Type', contentType);
+    res.send(body);
+  } catch (error) {
+    res.status(502).json({ error: 'Failed to fetch article', details: error.message });
+  }
+});
+
+// Download article as markdown
+app.get('/api/articles/:id/markdown', (req, res) => {
+  const article = articles.find(a => a.id === req.params.id);
+  if (!article) {
+    return res.status(404).json({ error: 'Article not found' });
+  }
+
+  const body = article.content || article.contentSnippet || article.excerpt || 'No content available.';
+  const tags = (article.tags || []).join(', ');
+  const published = article.publishedAt ? new Date(article.publishedAt).toLocaleDateString('zh-CN') : 'Unknown';
+
+  const markdown = [
+    `# ${article.title}`,
+    '',
+    `**Author:** ${article.writerName}`,
+    `**Published:** ${published}`,
+    `**Tags:** ${tags || 'none'}`,
+    `**Original:** [${article.url}](${article.url})`,
+    '',
+    '---',
+    '',
+    body
+  ].join('\n');
+
+  // Sanitize filename
+  const filename = article.title
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fff]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 60) + '.md';
+
+  res.set('Content-Type', 'text/markdown; charset=utf-8');
+  res.set('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
+  res.send(markdown);
+});
+
+// Initialize data from disk
+initData();
 
 app.listen(PORT, () => {
   console.log(`═══════════════════════════════════════════════════════════`);

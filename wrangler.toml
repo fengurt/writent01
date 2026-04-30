@@ -1,0 +1,16 @@
+name = "writer-tracker"
+main = "src/index.ts"
+compatibility_date = "2025-04-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "writer-tracker-db"
+database_id = ""
+
+[vars]
+WRITER_TRACKER_API_KEY = ""
+SENDING_DOMAIN = ""
+MAIL_TO = ""
+
+[env.production]
+# Production overrides set via: wrangler secret put WRITER_TRACKER_API_KEY --env production

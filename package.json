@@ -1,16 +1,28 @@
 {
   "name": "writer-tracker",
-  "version": "1.0.0",
-  "description": "Track writer updates across the web",
+  "version": "2.0.0",
+  "description": "Track writer updates across the web — Cloudflare Workers edition",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "wrangler deploy",
+    "cf:db:create": "wrangler d1 create writer-tracker-db",
+    "cf:db:seed": "wrangler d1 execute writer-tracker-db --file=data/seed.sql",
+    "cf:pages:deploy": "wrangler pages deploy public"
   },
   "dependencies": {
-    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "rss-parser": "^3.13.0",
-    "node-fetch": "^2.7.0"
+    "express": "^4.18.2",
+    "hono": "^4.12.15",
+    "node-fetch": "^2.7.0",
+    "nodemailer": "^8.0.7",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260430.1",
+    "typescript": "^5.9.3",
+    "wrangler": "^3.114.17"
   }
 }

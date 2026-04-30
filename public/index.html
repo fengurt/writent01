@@ -491,6 +491,467 @@
     }
 
     /* Responsive */
+    /* ========== Focus Rolling Carousel ========== */
+    .focus-rolling {
+      background: var(--deep-blue);
+      padding: 48px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .focus-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+      position: relative;
+    }
+    .focus-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .focus-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+    }
+    .focus-indicators {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .focus-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(168, 139, 82, 0.3);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .focus-dot.active {
+      background: var(--gold);
+      width: 24px;
+      border-radius: 4px;
+    }
+    .focus-track-wrapper {
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .focus-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+    .focus-slide {
+      flex: 0 0 100%;
+      min-width: 100%;
+    }
+    .focus-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(168, 139, 82, 0.2);
+      border-left: 3px solid var(--gold);
+      padding: 36px 40px;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.3s;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .focus-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(168, 139, 82, 0.5);
+    }
+    .focus-card-tag {
+      font-size: 0.65rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 12px;
+    }
+    .focus-card-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .focus-card-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+    .focus-card-meta span {
+      color: var(--gold-light);
+    }
+    .focus-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(168, 139, 82, 0.15);
+      border: 1px solid rgba(168, 139, 82, 0.3);
+      color: var(--gold);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 2;
+    }
+    .focus-rolling:hover .focus-arrow {
+      opacity: 1;
+    }
+    .focus-arrow:hover {
+      background: rgba(168, 139, 82, 0.3);
+    }
+    .focus-prev { left: 12px; }
+    .focus-next { right: 12px; }
+
+    /* ========== Article Section ========== */
+    .articles-section {
+      margin-bottom: 80px;
+    }
+    .tag-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 32px;
+      align-items: center;
+    }
+    .tag-pill {
+      padding: 6px 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.02em;
+    }
+    .tag-pill:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .tag-pill.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--white);
+    }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+    }
+    .article-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px 32px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .article-card:hover {
+      box-shadow: 0 12px 48px rgba(10, 22, 38, 0.08);
+      transform: translateY(-2px);
+      border-color: var(--gold);
+    }
+    .article-card-writer {
+      font-size: 0.7rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .article-card-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--deep-blue);
+      letter-spacing: 0.02em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .article-card-excerpt {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      flex: 1;
+    }
+    .article-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+    }
+    .article-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .article-card-tag {
+      padding: 2px 10px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    .article-card-date {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* ========== Modal ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10,22,38,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay[hidden] {
+      display: none;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-container {
+      background: var(--bg-card);
+      border-radius: 8px;
+      max-width: 800px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+    .modal-close {
+      position: sticky;
+      top: 16px;
+      float: right;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 10;
+      margin-right: 16px;
+    }
+    .modal-close:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .modal-body {
+      padding: 0 40px 32px;
+    }
+    .modal-writer {
+      font-size: 0.75rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .modal-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--deep-blue);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .modal-date {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .modal-content {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-primary);
+      white-space: pre-wrap;
+    }
+    .modal-content h1, .modal-content h2, .modal-content h3 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: var(--deep-blue);
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+    .modal-content h1 { font-size: 1.6rem; }
+    .modal-content h2 { font-size: 1.35rem; }
+    .modal-content h3 { font-size: 1.15rem; }
+    .modal-content p {
+      margin-bottom: 16px;
+    }
+    .modal-snippet {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+    .modal-fallback {
+      text-align: center;
+      padding: 48px 0;
+    }
+    .modal-fallback p {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .modal-fallback iframe {
+      width: 100%;
+      height: 500px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .modal-actions {
+      padding: 0 40px 32px;
+      display: flex;
+      gap: 12px;
+    }
+    .btn-download {
+      padding: 12px 24px;
+      background: var(--deep-blue);
+      color: var(--white);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: all 0.2s;
+    }
+    .btn-download:hover {
+      background: var(--gold);
+    }
+    .btn-original {
+      padding: 12px 24px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .btn-original:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* ========== Request Form ========== */
+    .request-section {
+      margin-bottom: 60px;
+    }
+    .request-form {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 32px;
+    }
+    .request-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .request-fields input,
+    .request-fields textarea {
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.2s;
+    }
+    .request-fields input:focus,
+    .request-fields textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-glow);
+    }
+    .request-fields textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    .btn-submit {
+      padding: 12px 24px;
+      background: var(--deep-blue);
+      color: var(--white);
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      transition: all 0.2s;
+      align-self: flex-start;
+    }
+    .btn-submit:hover {
+      background: var(--gold);
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .request-feedback {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .request-feedback.success {
+      background: rgba(168, 139, 82, 0.1);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+    .request-feedback.error {
+      background: rgba(200, 50, 50, 0.08);
+      border: 1px solid rgba(200, 50, 50, 0.3);
+      color: #c83232;
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 0 20px;
@@ -546,13 +1007,34 @@
           <div class="stat-label">Historical Figures</div>
         </div>
         <div class="stat">
+          <div class="stat-value" id="article-count">0</div>
+          <div class="stat-label">Articles</div>
+        </div>
+        <div class="stat">
           <div class="stat-value">60</div>
           <div class="stat-label">Total</div>
         </div>
       </div>
     </header>
+  </div>
 
-    <div class="controls">
+  <!-- Focus Rolling Carousel -->
+  <section class="focus-rolling" id="focus-rolling">
+    <div class="focus-inner">
+      <div class="focus-header">
+        <h2 class="focus-title">Focus Rolling</h2>
+        <div class="focus-indicators" id="focus-indicators"></div>
+      </div>
+      <div class="focus-track-wrapper">
+        <div class="focus-track" id="focus-track"></div>
+      </div>
+    </div>
+    <button class="focus-arrow focus-prev" id="focus-prev" aria-label="Previous">&#10094;</button>
+    <button class="focus-arrow focus-next" id="focus-next" aria-label="Next">&#10095;</button>
+  </section>
+
+  <div class="container">
+      <div class="controls">
       <div class="search-box">
         <input type="text" id="search" placeholder="搜索作家、身份、作品...">
       </div>
@@ -587,6 +1069,27 @@
 
     <div class="section-title">Writers & Authors</div>
     <div class="writers-grid" id="writers-grid"></div>
+
+    <section class="articles-section" id="articles-section">
+      <div class="section-title">Articles & Updates</div>
+      <div class="tag-filters" id="tag-filters">
+        <button class="tag-pill active" data-tag="all">All</button>
+      </div>
+      <div class="articles-grid" id="articles-grid"></div>
+    </section>
+
+    <section class="request-section" id="request-section">
+      <div class="section-title">Want a writer added?</div>
+      <form class="request-form" id="request-form">
+        <div class="request-fields">
+          <input type="text" id="req-name" placeholder="Writer name" required>
+          <input type="url" id="req-website" placeholder="Website URL (optional)">
+          <textarea id="req-reason" placeholder="Why should we track this writer? (optional)" rows="2"></textarea>
+          <button type="submit" class="btn-submit" id="btn-submit">Submit Request</button>
+        </div>
+        <div class="request-feedback" id="request-feedback" hidden></div>
+      </form>
+    </section>
 
     <footer>
       <div class="footer-brand">Writer Tracker</div>
@@ -657,23 +1160,23 @@
         
         if (isModern) {
           return `
-            <div class="writer-card ${type}" data-id="${writer.id}">
+            <div class="writer-card ${type}" data-id="${escapeHtml(writer.id)}">
               <div class="writer-header">
                 <div>
-                  <div class="writer-name">${writer.name}</div>
-                  <div class="writer-identity">${writer.identity}</div>
+                  <div class="writer-name">${escapeHtml(writer.name)}</div>
+                  <div class="writer-identity">${escapeHtml(writer.identity)}</div>
                 </div>
                 <span class="writer-badge ${type}">${type === 'modern' ? '现代' : '历史'}</span>
               </div>
               <div class="writer-links">
-                <a href="${writer.website}" target="_blank" rel="noopener" class="writer-link">
+                <a href="${escapeHtml(writer.website)}" target="_blank" rel="noopener" class="writer-link">
                   <span class="writer-link-icon">↗</span>
-                  ${writer.website.replace('https://', '')}
+                  ${escapeHtml(writer.website.replace('https://', ''))}
                 </a>
                 ${writer.articles.map(article => `
-                  <a href="${article.url}" target="_blank" rel="noopener" class="writer-link">
+                  <a href="${escapeHtml(article.url)}" target="_blank" rel="noopener" class="writer-link">
                     <span class="writer-link-icon">·</span>
-                    ${article.title}
+                    ${escapeHtml(article.title)}
                   </a>
                 `).join('')}
               </div>
@@ -684,13 +1187,13 @@
             <div class="writer-card ${type}">
               <div class="writer-header">
                 <div>
-                  <div class="writer-name">${writer.name}</div>
+                  <div class="writer-name">${escapeHtml(writer.name)}</div>
                 </div>
                 <span class="writer-badge ${type}">历史</span>
               </div>
-              <div class="writer-era">${writer.era}</div>
-              <div class="writer-masterpiece">${writer.masterpiece}</div>
-              <div class="writer-description">${writer.description}</div>
+              <div class="writer-era">${escapeHtml(writer.era)}</div>
+              <div class="writer-masterpiece">${escapeHtml(writer.masterpiece)}</div>
+              <div class="writer-description">${escapeHtml(writer.description)}</div>
             </div>
           `;
         }
@@ -732,7 +1235,344 @@
       }
     });
 
-    loadWriters();
+    // Article state
+    let currentArticles = [];
+    let currentArticleId = null;
+    let carouselInterval = null;
+    let carouselIndex = 0;
+
+    // Initialize all data on page load
+    async function init() {
+      await loadWriters();
+      await loadFocusFeed();
+      await loadArticles();
+    }
+
+    // ========== Focus Rolling Carousel ==========
+    async function loadFocusFeed() {
+      try {
+        const res = await fetch(`${API_BASE}/api/articles/feed?count=10`);
+        const data = await res.json();
+        const track = document.getElementById('focus-track');
+        const indicators = document.getElementById('focus-indicators');
+
+        if (!data || data.length === 0) {
+          track.innerHTML = `<div class="focus-slide"><div class="focus-card"><div class="focus-card-title">No articles yet</div><div class="focus-card-meta">Fetch articles from RSS or add manually</div></div></div>`;
+          indicators.innerHTML = '';
+          return;
+        }
+
+        indicators.innerHTML = data.map((_, i) =>
+          `<span class="focus-dot${i === 0 ? ' active' : ''}" data-index="${i}"></span>`
+        ).join('');
+
+        track.innerHTML = data.map((a, i) => `
+          <div class="focus-slide" data-id="${a.id}">
+            <div class="focus-card">
+              <div class="focus-card-tag">${a.source === 'rss' ? 'RSS Update' : 'Article'}</div>
+              <div class="focus-card-title">${escapeHtml(a.title)}</div>
+              <div class="focus-card-meta">
+                <span>${escapeHtml(a.writerName)}</span>
+                ${a.publishedAt ? ' &middot; ' + formatDate(a.publishedAt) : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        carouselIndex = 0;
+        updateCarouselPosition();
+        startCarousel();
+      } catch (e) {
+        document.getElementById('focus-track').innerHTML =
+          `<div class="focus-slide"><div class="focus-card"><div class="focus-card-title">Could not load feed</div><div class="focus-card-meta">Check server connection</div></div></div>`;
+      }
+    }
+
+    function updateCarouselPosition() {
+      const track = document.getElementById('focus-track');
+      track.style.transform = `translateX(-${carouselIndex * 100}%)`;
+      document.querySelectorAll('.focus-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === carouselIndex);
+      });
+    }
+
+    function startCarousel() {
+      stopCarousel();
+      const slides = document.querySelectorAll('.focus-slide');
+      if (slides.length <= 1) return;
+      carouselInterval = setInterval(() => {
+        carouselIndex = (carouselIndex + 1) % slides.length;
+        updateCarouselPosition();
+      }, 6000);
+    }
+
+    function stopCarousel() {
+      if (carouselInterval) {
+        clearInterval(carouselInterval);
+        carouselInterval = null;
+      }
+    }
+
+    document.getElementById('focus-rolling').addEventListener('mouseenter', stopCarousel);
+    document.getElementById('focus-rolling').addEventListener('mouseleave', startCarousel);
+    document.getElementById('focus-prev').addEventListener('click', () => {
+      const slides = document.querySelectorAll('.focus-slide');
+      carouselIndex = (carouselIndex - 1 + slides.length) % slides.length;
+      updateCarouselPosition();
+    });
+    document.getElementById('focus-next').addEventListener('click', () => {
+      const slides = document.querySelectorAll('.focus-slide');
+      carouselIndex = (carouselIndex + 1) % slides.length;
+      updateCarouselPosition();
+    });
+    document.getElementById('focus-indicators').addEventListener('click', (e) => {
+      const dot = e.target.closest('.focus-dot');
+      if (!dot) return;
+      carouselIndex = parseInt(dot.dataset.index);
+      updateCarouselPosition();
+    });
+    document.getElementById('focus-track').addEventListener('click', (e) => {
+      const slide = e.target.closest('.focus-slide');
+      if (!slide || !slide.dataset.id) return;
+      openArticleModal(slide.dataset.id);
+    });
+
+    // ========== Article List ==========
+    async function loadArticles(params = {}) {
+      try {
+        const query = new URLSearchParams(params).toString();
+        const res = await fetch(`${API_BASE}/api/articles?${query}`);
+        const data = await res.json();
+        currentArticles = data.articles;
+
+        // Update article count stat
+        document.getElementById('article-count').textContent = data.total;
+
+        // Populate tag filters
+        const tagContainer = document.getElementById('tag-filters');
+        const activeTag = params.tag || 'all';
+        tagContainer.innerHTML = `<button class="tag-pill${activeTag === 'all' ? ' active' : ''}" data-tag="all">All</button>` +
+          data.tags.map(t => `<button class="tag-pill${activeTag === t ? ' active' : ''}" data-tag="${t}">${t}</button>`).join('');
+
+        // Render article cards
+        renderArticleCards(data.articles);
+      } catch (e) {
+        document.getElementById('articles-grid').innerHTML =
+          `<div class="empty-state"><h3>Could not load articles</h3><p>Check server connection</p></div>`;
+      }
+    }
+
+    function renderArticleCards(articles) {
+      const grid = document.getElementById('articles-grid');
+      if (!articles || articles.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><h3>No articles found</h3><p>Fetch from RSS feeds or add articles manually</p></div>`;
+        return;
+      }
+      grid.innerHTML = articles.map(a => `
+        <div class="article-card" data-id="${a.id}">
+          <div class="article-card-writer">${escapeHtml(a.writerName)}</div>
+          <div class="article-card-title">${escapeHtml(a.title)}</div>
+          ${a.excerpt || a.contentSnippet ? `<div class="article-card-excerpt">${escapeHtml((a.excerpt || a.contentSnippet || '').substring(0, 300))}</div>` : ''}
+          <div class="article-card-bottom">
+            <div class="article-card-tags">
+              ${(a.tags || []).slice(0, 3).map(t => `<span class="article-card-tag">${escapeHtml(t)}</span>`).join('')}
+            </div>
+            <div class="article-card-date">${formatDate(a.publishedAt)}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterByTag(tag) {
+      loadArticles(tag === 'all' ? {} : { tag });
+    }
+
+    document.getElementById('tag-filters').addEventListener('click', (e) => {
+      const pill = e.target.closest('.tag-pill');
+      if (!pill) return;
+      filterByTag(pill.dataset.tag);
+    });
+
+    document.getElementById('articles-grid').addEventListener('click', (e) => {
+      const card = e.target.closest('.article-card');
+      if (!card) return;
+      openArticleModal(card.dataset.id);
+    });
+
+    // ========== Article Modal ==========
+    async function openArticleModal(articleId) {
+      try {
+        const res = await fetch(`${API_BASE}/api/articles/${articleId}`);
+        const article = await res.json();
+        if (article.error) throw new Error(article.error);
+
+        currentArticleId = articleId;
+        stopCarousel();
+
+        const modal = document.getElementById('article-modal');
+        const body = document.getElementById('modal-body');
+        const btnDownload = document.getElementById('btn-download');
+        const btnOriginal = document.getElementById('btn-original');
+
+        const tags = (article.tags || []).join(', ') || 'none';
+
+        let contentHtml = '';
+        if (article.content) {
+          // Tier 1: Full content
+          const displayContent = article.content.substring(0, 10000).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          contentHtml = `<div class="modal-content">${formatMarkdown(displayContent)}</div>`;
+        } else if (article.contentSnippet) {
+          // Tier 2: Snippet
+          contentHtml = `
+            <div class="modal-snippet">${escapeHtml(article.contentSnippet)}</div>
+            <div class="modal-fallback"><p>Preview only. Full article not stored.</p></div>`;
+        } else {
+          // Tier 3: Proxy iframe
+          contentHtml = `
+            <div class="modal-fallback">
+              <p>Content not stored. Attempting to load from original source...</p>
+              <iframe src="${API_BASE}/api/articles/${article.id}/proxy" sandbox="allow-same-origin"></iframe>
+            </div>`;
+        }
+
+        body.innerHTML = `
+          <div class="modal-writer">${escapeHtml(article.writerName)}</div>
+          <div class="modal-title">${escapeHtml(article.title)}</div>
+          <div class="modal-date">Tags: ${tags} &middot; ${formatDate(article.publishedAt)} &middot; ${article.source === 'rss' ? 'RSS' : 'Manual'}</div>
+          ${contentHtml}
+        `;
+
+        btnDownload.onclick = () => downloadMarkdown(articleId);
+        btnOriginal.href = article.url;
+
+        modal.removeAttribute('hidden');
+        document.addEventListener('keydown', handleModalEscape);
+      } catch (e) {
+        alert('Could not load article: ' + e.message);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('article-modal').setAttribute('hidden', '');
+      document.getElementById('modal-body').innerHTML = '';
+      currentArticleId = null;
+      document.removeEventListener('keydown', handleModalEscape);
+      startCarousel();
+    }
+
+    function handleModalEscape(e) {
+      if (e.key === 'Escape') closeModal();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      document.getElementById('article-modal').addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+    });
+
+    function downloadMarkdown(articleId) {
+      const a = document.createElement('a');
+      a.href = `${API_BASE}/api/articles/${articleId}/markdown`;
+      a.download = '';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // ========== Utility Functions ==========
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      try {
+        return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      } catch (e) {
+        return dateStr;
+      }
+    }
+
+    function formatMarkdown(text) {
+      // Simple markdown-to-HTML: headers, bold, paragraphs
+      let html = text;
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      html = html.replace(/\n\n/g, '</p><p>');
+      html = '<p>' + html + '</p>';
+      html = html.replace(/<p><\/p>/g, '');
+      return html;
+    }
+
+    // ========== Writer Request Form ==========
+    document.getElementById('request-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit');
+      const feedback = document.getElementById('request-feedback');
+      const name = document.getElementById('req-name').value.trim();
+      const website = document.getElementById('req-website').value.trim();
+      const reason = document.getElementById('req-reason').value.trim();
+
+      if (!name) {
+        feedback.textContent = 'Writer name is required.';
+        feedback.className = 'request-feedback error';
+        feedback.removeAttribute('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      try {
+        const res = await fetch(`${API_BASE}/api/requests`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ writerName: name, website, reason })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          feedback.textContent = 'Request submitted! We\'ll review it soon.';
+          feedback.className = 'request-feedback success';
+          feedback.removeAttribute('hidden');
+          document.getElementById('req-name').value = '';
+          document.getElementById('req-website').value = '';
+          document.getElementById('req-reason').value = '';
+        } else {
+          feedback.textContent = data.error || 'Something went wrong. Please try again.';
+          feedback.className = 'request-feedback error';
+          feedback.removeAttribute('hidden');
+        }
+      } catch (err) {
+        feedback.textContent = 'Network error. Please check your connection.';
+        feedback.className = 'request-feedback error';
+        feedback.removeAttribute('hidden');
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Submit Request';
+    });
+
+    init().catch(console.error);
   </script>
+
+  <!-- Article Detail Modal -->
+  <div class="modal-overlay" id="article-modal" hidden>
+    <div class="modal-container">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-actions">
+        <button class="btn-download" id="btn-download">Download .md</button>
+        <a class="btn-original" id="btn-original" target="_blank" rel="noopener">Open Original</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -4,6 +4,23 @@
 # API Key for content management (keep this secret!)
 WRITER_TRACKER_API_KEY=your-secret-api-key-here
 
+# ── Local Mode (Express.js) ──
+# SMTP configuration (for "I want..." writer request emails, optional)
+SMTP_HOST=
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+SMTP_TO=
+
 # Git configuration (for auto-push)
 GIT_REMOTE_URL=https://github.com/YOUR_USERNAME/writent01.git
 GIT_BRANCH=main
+
+# ── Cloudflare Mode (Workers) ──
+# Set via: wrangler secret put WRITER_TRACKER_API_KEY
+# or in wrangler.toml [vars] for non-secret values
+
+# For MailChannels (Worker email):
+# SENDING_DOMAIN = your-domain.com (must have Cloudflare DNS + SPF)
+# MAIL_TO = you@example.com
+# Set in wrangler.toml [vars] section
